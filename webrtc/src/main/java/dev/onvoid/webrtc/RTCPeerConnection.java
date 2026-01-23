@@ -30,6 +30,8 @@ import java.util.List;
  */
 public class RTCPeerConnection extends NativeObject {
 
+	private final InterceptorRegistry interceptorRegistry = new InterceptorRegistry();
+
 	/**
 	 * The PeerConnection doesn't take ownership of the observer. When the
 	 * PeerConnection is closed the observer will be disposed using this handle.
@@ -37,6 +39,58 @@ public class RTCPeerConnection extends NativeObject {
 	@SuppressWarnings("unused")
 	private long observerHandle;
 
+	/**
+	 * Returns the interceptor registry for this peer connection.
+	 *
+	 * @return The interceptor registry.
+	 */
+	public InterceptorRegistry getInterceptorRegistry() {
+		return interceptorRegistry;
+	}
+
+	private RTCRtpPacket interceptRTP(RTCRtpPacket packet, RTCRtpSender sender) {
+		RTCRtpPacket result = packet;
+		for (Interceptor interceptor : interceptorRegistry.getInterceptors()) {
+			result = interceptor.interceptRTP(result, sender);
+			if (result == null) {
+				return null;
+			}
+		}
+		return result;
+	}
+
+	private RTCRtpPacket interceptIncomingRTP(RTCRtpPacket packet, RTCRtpReceiver receiver) {
+		RTCRtpPacket result = packet;
+		for (Interceptor interceptor : interceptorRegistry.getInterceptors()) {
+			result = interceptor.interceptIncomingRTP(result, receiver);
+			if (result == null) {
+				return null;
+			}
+		}
+		return result;
+	}
+
+	private RTCRtcpPacket interceptRTCP(RTCRtcpPacket packet) {
+		RTCRtcpPacket result = packet;
+		for (Interceptor interceptor : interceptorRegistry.getInterceptors()) {
+			result = interceptor.interceptRTCP(result);
+			if (result == null) {
+				return null;
+			}
+		}
+		return result;
+	}
+
+	private RTCRtcpPacket interceptIncomingRTCP(RTCRtcpPacket packet) {
+		RTCRtcpPacket result = packet;
+		for (Interceptor interceptor : interceptorRegistry.getInterceptors()) {
+			result = interceptor.interceptIncomingRTCP(result);
+			if (result == null) {
+				return null;
+			}
+		}
+		return result;
+	}
 
 	/**
 	 * Constructor used by the native api.
@@ -106,7 +160,7 @@ public class RTCPeerConnection extends NativeObject {
 	 * @param init  The transceiver configuration options.
 	 *
 	 * @return The RTCRtpTransceiver which will be used to transmit and receive
-	 * the media data.
+	 *         the media data.
 	 */
 	public native RTCRtpTransceiver addTransceiver(MediaStreamTrack track,
 			RTCRtpTransceiverInit init);
@@ -208,7 +262,7 @@ public class RTCPeerConnection extends NativeObject {
 	 * RTCPeerConnection is in the stable state, the value is {@code null}.
 	 *
 	 * @return The remote description that is in the process of being
-	 * negotiated.
+	 *         negotiated.
 	 */
 	public native RTCSessionDescription getPendingRemoteDescription();
 
@@ -285,7 +339,7 @@ public class RTCPeerConnection extends NativeObject {
 	 * of this RTCPeerConnection.
 	 *
 	 * @return The configuration that indicates the current configuration of
-	 * this RTCPeerConnection.
+	 *         this RTCPeerConnection.
 	 */
 	public native RTCConfiguration getConfiguration();
 

@@ -40,12 +40,10 @@ public class PeerConnectionFactory extends DisposableNativeObject {
 	static {
 		try {
 			NativeLoader.loadLibrary("webrtc-java");
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new RuntimeException("Load library 'webrtc-java' failed", e);
 		}
 	}
-
 
 	@SuppressWarnings("unused")
 	private long networkThreadHandle;
@@ -56,12 +54,11 @@ public class PeerConnectionFactory extends DisposableNativeObject {
 	@SuppressWarnings("unused")
 	private long workerThreadHandle;
 
-
 	/**
 	 * Creates an instance of PeerConnectionFactory.
 	 */
 	public PeerConnectionFactory() {
-		this(null, null);
+		initialize(null, null, true);
 	}
 
 	/**
@@ -71,7 +68,7 @@ public class PeerConnectionFactory extends DisposableNativeObject {
 	 * @param audioProcessing The custom audio processing module.
 	 */
 	public PeerConnectionFactory(AudioProcessing audioProcessing) {
-		initialize(null, audioProcessing);
+		initialize(null, audioProcessing, true);
 	}
 
 	/**
@@ -81,7 +78,7 @@ public class PeerConnectionFactory extends DisposableNativeObject {
 	 * @param audioModule The custom audio device module.
 	 */
 	public PeerConnectionFactory(AudioDeviceModuleBase audioModule) {
-		initialize(audioModule, null);
+		initialize(audioModule, null, true);
 	}
 
 	/**
@@ -93,7 +90,7 @@ public class PeerConnectionFactory extends DisposableNativeObject {
 	 */
 	public PeerConnectionFactory(AudioDeviceModuleBase audioModule,
 			AudioProcessing audioProcessing) {
-		initialize(audioModule, audioProcessing);
+		initialize(audioModule, audioProcessing, true);
 	}
 
 	/**
@@ -170,6 +167,6 @@ public class PeerConnectionFactory extends DisposableNativeObject {
 	public native void dispose();
 
 	private native void initialize(AudioDeviceModuleBase audioModule,
-			AudioProcessing audioProcessing);
+			AudioProcessing audioProcessing, boolean enableInterceptors);
 
 }

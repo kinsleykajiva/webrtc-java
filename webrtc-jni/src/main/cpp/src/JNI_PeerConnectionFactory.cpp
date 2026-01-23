@@ -15,6 +15,7 @@
  */
 
 #include "JNI_PeerConnectionFactory.h"
+#include "api/AudioInterceptor.h"
 #include "api/AudioOptions.h"
 #include "api/CreateSessionDescriptionObserver.h"
 #include "api/PeerConnectionObserver.h"
@@ -57,7 +58,7 @@
 #include "api/video_codecs/video_encoder_factory_template.h"
 
 JNIEXPORT void JNICALL Java_dev_onvoid_webrtc_PeerConnectionFactory_initialize
-(JNIEnv * env, jobject caller, jobject audioModule, jobject audioProcessing)
+(JNIEnv * env, jobject caller, jobject audioModule, jobject audioProcessing, jboolean enableInterceptors)
 {
 	webrtc::AudioDeviceModule * audioDevModule = (audioModule != nullptr)
 		? GetHandle<webrtc::AudioDeviceModule>(env, audioModule)
@@ -119,6 +120,7 @@ JNIEXPORT void JNICALL Java_dev_onvoid_webrtc_PeerConnectionFactory_initialize
 			SetHandle(env, caller, "networkThreadHandle", networkThread.release());
 			SetHandle(env, caller, "signalingThreadHandle", signalingThread.release());
 			SetHandle(env, caller, "workerThreadHandle", workerThread.release());
+			SetHandle(env, caller, "enableInterceptors", (bool)enableInterceptors);
 		}
 		else {
 			throw jni::Exception("Create PeerConnectionFactory failed");
@@ -261,6 +263,12 @@ JNIEXPORT jobject JNICALL Java_dev_onvoid_webrtc_PeerConnectionFactory_createPee
 	webrtc::PeerConnectionObserver * observer = new jni::PeerConnectionObserver(env, jni::JavaGlobalRef<jobject>(env, jobserver));
 	webrtc::PeerConnectionDependencies dependencies(observer);
 
+	bool enableInterceptors = GetHandle<bool>(env, caller, "enableInterceptors");
+
+	if (enableInterceptors) {
+		dependencies.interceptor_factory = std::make_unique<jni::AudioInterceptorFactory>(env, true);
+	}
+
 	auto result = factory->CreatePeerConnectionOrError(configuration, std::move(dependencies));
 
 	if (!result.ok()) {
@@ -274,6 +282,13 @@ JNIEXPORT jobject JNICALL Java_dev_onvoid_webrtc_PeerConnectionFactory_createPee
 
 	if (pc != nullptr) {
 		auto javaPeerConnection = jni::JavaFactories::create(env, pc.release());
+
+		if (enableInterceptors) {
+			auto interceptor = GetLastCreatedInterceptor();
+			if (interceptor) {
+				interceptor->SetPeerConnection(env, javaPeerConnection.get());
+			}
+		}
 
 		SetHandle(env, javaPeerConnection.get(), "observerHandle", observer);
 
