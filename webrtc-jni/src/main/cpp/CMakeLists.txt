@@ -36,8 +36,8 @@ elseif(LINUX)
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -s")
     set(SOURCE_TARGET linux)
 elseif(WIN32)
-    set(CMAKE_CXX_FLAGS_RELEASE "/MT")
-    set(CMAKE_CXX_FLAGS_DEBUG "/MTd")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
     set(SOURCE_TARGET windows)
 endif()
 
@@ -112,7 +112,8 @@ elseif(LINUX)
 
     target_link_libraries(${PROJECT_NAME} ${CXX_LIBS} pulse udev)
 elseif(WIN32)
-    target_link_libraries(${PROJECT_NAME} dwmapi.lib mf.lib mfreadwrite.lib mfplat.lib mfuuid.lib shcore.lib)
+    target_link_libraries(${PROJECT_NAME} dwmapi.lib mf.lib mfreadwrite.lib mfplat.lib mfuuid.lib shcore.lib libcpmt.lib)
+    target_link_options(${PROJECT_NAME} PRIVATE "/FORCE:MULTIPLE")
 endif()
 
 install(TARGETS ${PROJECT_NAME}

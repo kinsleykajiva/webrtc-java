@@ -143,11 +143,27 @@ else()
     set(TARGET_LIBCPP_ABI_INC_DIR ${WEBRTC_SRC}/third_party/libc++abi/src/include)
 endif()
 
-if(LINUX AND NOT TARGET_CPU MATCHES "^arm")
+if((LINUX AND NOT TARGET_CPU MATCHES "^arm") OR WIN32)
     target_include_directories(${PROJECT_NAME} PUBLIC ${TARGET_LIBCPP_BUILDTOOLS_INC_DIR})
     target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${TARGET_LIBCPP_INC_DIR} ${TARGET_LIBCPP_ABI_INC_DIR})
 
     target_link_directories(${PROJECT_NAME} PUBLIC "${TARGET_LIB_DIR}")
+
+    if(WIN32)
+        # Try a few common paths for libc++ objects on Windows
+        set(LIBCXX_OBJ_DIR "${WEBRTC_SRC}/${WEBRTC_BUILD}/obj/buildtools/third_party/libc++/libc++")
+        if(NOT EXISTS "${LIBCXX_OBJ_DIR}")
+             set(LIBCXX_OBJ_DIR "${WEBRTC_SRC}/out/Release/obj/buildtools/third_party/libc++/libc++")
+        endif()
+
+        if(EXISTS "${LIBCXX_OBJ_DIR}")
+            file(GLOB LibCPP_OBJS "${LIBCXX_OBJ_DIR}/*.obj")
+            target_sources(${PROJECT_NAME} PRIVATE ${LibCPP_OBJS})
+            message(STATUS "WebRTC: Added libc++ objects to ${PROJECT_NAME} from ${LIBCXX_OBJ_DIR}")
+        else()
+             message(WARNING "WebRTC: Could not find libc++ objects directory at ${LIBCXX_OBJ_DIR}")
+        endif()
+    endif()
 endif()
 
 target_include_directories(${PROJECT_NAME}
@@ -177,6 +193,7 @@ elseif(LINUX)
 elseif(WIN32)
     target_compile_definitions(${PROJECT_NAME} PUBLIC WEBRTC_WIN WEBRTC_USE_H264 NOMINMAX WIN32_LEAN_AND_MEAN NDEBUG)
     target_link_libraries(${PROJECT_NAME} D3D11 DXGI user32 gdi32 iphlpapi dmoguids msdmo secur32 strmiids winmm wmcodecdspuuid ws2_32)
+    target_link_options(${PROJECT_NAME} PRIVATE "/FORCE:MULTIPLE")
 endif()
 
 if(EXISTS "${WEBRTC_LIB_PATH}" OR EXISTS "${WEBRTC_LIB_PATH_INSTALLED}")
@@ -302,6 +319,8 @@ else()
         WORKING_DIRECTORY "${WEBRTC_SRC}"
     )
 endif()
+
+# Libc++ objects now handled earlier
 
 if(LINUX)
     if(LINUX AND NOT TARGET_CPU MATCHES "^arm")

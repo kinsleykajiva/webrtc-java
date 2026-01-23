@@ -80,6 +80,4 @@ target_include_directories(${PROJECT_NAME}
         include/jni/${JNI_PLATFORM}
 )
 
-if(LINUX)
-    target_link_libraries(${PROJECT_NAME} PRIVATE webrtc)
-endif()
+target_link_libraries(${PROJECT_NAME} PRIVATE webrtc)
