@@ -31,8 +31,18 @@
 #include "JavaUtils.h"
 
 #include "api/create_peerconnection_factory.h"
-#include "api/audio_codecs/builtin_audio_decoder_factory.h"
-#include "api/audio_codecs/builtin_audio_encoder_factory.h"
+#include "api/audio_codecs/audio_decoder_factory_template.h"
+#include "api/audio_codecs/audio_encoder_factory_template.h"
+#include "api/audio_codecs/L16/audio_decoder_L16.h"
+#include "api/audio_codecs/L16/audio_encoder_L16.h"
+#include "api/audio_codecs/g711/audio_decoder_g711.h"
+#include "api/audio_codecs/g711/audio_encoder_g711.h"
+#include "api/audio_codecs/g722/audio_decoder_g722.h"
+#include "api/audio_codecs/g722/audio_encoder_g722.h"
+#include "api/audio_codecs/opus/audio_decoder_multi_channel_opus.h"
+#include "api/audio_codecs/opus/audio_decoder_opus.h"
+#include "api/audio_codecs/opus/audio_encoder_multi_channel_opus.h"
+#include "api/audio_codecs/opus/audio_encoder_opus.h"
 
 #ifdef __APPLE__
 #include "sdk/objc/components/video_codec/RTCDefaultVideoDecoderFactory.h"
@@ -56,6 +66,46 @@
 #include "api/video_codecs/video_decoder_factory_template.h"
 #include "api/video_codecs/video_encoder_factory.h"
 #include "api/video_codecs/video_encoder_factory_template.h"
+
+namespace {
+	// Modify an audio encoder to not advertise support for anything.
+	template <typename T>
+	struct NotAdvertised {
+		using Config = typename T::Config;
+		static std::optional<Config> SdpToConfig(const webrtc::SdpAudioFormat& audio_format) {
+			return T::SdpToConfig(audio_format);
+		}
+		static void AppendSupportedEncoders(std::vector<webrtc::AudioCodecSpec>* /* specs */) {
+			// Don't advertise support for anything.
+		}
+		static webrtc::AudioCodecInfo QueryAudioEncoder(const Config& config) {
+			return T::QueryAudioEncoder(config);
+		}
+		static std::unique_ptr<webrtc::AudioEncoder> MakeAudioEncoder(
+				const Config& config,
+				int payload_type,
+				std::optional<webrtc::AudioCodecPairId> codec_pair_id = std::nullopt,
+				const webrtc::FieldTrialsView* field_trials = nullptr) {
+			return T::MakeAudioEncoder(config, payload_type, codec_pair_id, field_trials);
+		}
+	};
+
+	template <typename T>
+	struct NotAdvertisedDecoder {
+		using Config = typename T::Config;
+		static std::optional<Config> SdpToConfig(const webrtc::SdpAudioFormat& audio_format) {
+			return T::SdpToConfig(audio_format);
+		}
+		static void AppendSupportedDecoders(std::vector<webrtc::AudioCodecSpec>* /* specs */) {
+			// Don't advertise support for anything.
+		}
+		static std::unique_ptr<webrtc::AudioDecoder> MakeAudioDecoder(
+				const Config& config,
+				std::optional<webrtc::AudioCodecPairId> codec_pair_id = std::nullopt) {
+			return T::MakeAudioDecoder(config, codec_pair_id);
+		}
+	};
+}
 
 JNIEXPORT void JNICALL Java_dev_onvoid_webrtc_PeerConnectionFactory_initialize
 (JNIEnv * env, jobject caller, jobject audioModule, jobject audioProcessing, jboolean enableInterceptors)
@@ -95,8 +145,18 @@ JNIEXPORT void JNICALL Java_dev_onvoid_webrtc_PeerConnectionFactory_initialize
 			workerThread.get(),
 			signalingThread.get(),
 			adm,
-			webrtc::CreateBuiltinAudioEncoderFactory(),
-			webrtc::CreateBuiltinAudioDecoderFactory(),
+			webrtc::CreateAudioEncoderFactory<
+				webrtc::AudioEncoderOpus,
+				NotAdvertised<webrtc::AudioEncoderMultiChannelOpus>,
+				webrtc::AudioEncoderG722,
+				webrtc::AudioEncoderG711,
+				webrtc::AudioEncoderL16>(),
+			webrtc::CreateAudioDecoderFactory<
+				webrtc::AudioDecoderOpus,
+				NotAdvertisedDecoder<webrtc::AudioDecoderMultiChannelOpus>,
+				webrtc::AudioDecoderG722,
+				webrtc::AudioDecoderG711,
+				webrtc::AudioDecoderL16>(),
 #ifdef __APPLE__
 			webrtc::ObjCToNativeVideoEncoderFactory([[RTC_OBJC_TYPE(RTCDefaultVideoEncoderFactory) alloc] init]),
 			webrtc::ObjCToNativeVideoDecoderFactory([[RTC_OBJC_TYPE(RTCDefaultVideoDecoderFactory) alloc] init]),
