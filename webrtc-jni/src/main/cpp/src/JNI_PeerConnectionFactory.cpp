@@ -15,7 +15,7 @@
  */
 
 #include "JNI_PeerConnectionFactory.h"
-#include "api/AudioInterceptor.h"
+// #include "api/AudioInterceptor.h"
 #include "api/AudioOptions.h"
 #include "api/CreateSessionDescriptionObserver.h"
 #include "api/PeerConnectionObserver.h"
@@ -120,7 +120,7 @@ JNIEXPORT void JNICALL Java_dev_onvoid_webrtc_PeerConnectionFactory_initialize
 			SetHandle(env, caller, "networkThreadHandle", networkThread.release());
 			SetHandle(env, caller, "signalingThreadHandle", signalingThread.release());
 			SetHandle(env, caller, "workerThreadHandle", workerThread.release());
-			SetHandle(env, caller, "enableInterceptors", (bool)enableInterceptors);
+			SetHandle(env, caller, "enableInterceptors", reinterpret_cast<void *>(static_cast<intptr_t>(enableInterceptors)));
 		}
 		else {
 			throw jni::Exception("Create PeerConnectionFactory failed");
@@ -265,9 +265,9 @@ JNIEXPORT jobject JNICALL Java_dev_onvoid_webrtc_PeerConnectionFactory_createPee
 
 	bool enableInterceptors = GetHandle<bool>(env, caller, "enableInterceptors");
 
-	if (enableInterceptors) {
+	/*if (enableInterceptors) {
 		dependencies.interceptor_factory = std::make_unique<jni::AudioInterceptorFactory>(env, true);
-	}
+	}*/
 
 	auto result = factory->CreatePeerConnectionOrError(configuration, std::move(dependencies));
 
@@ -283,12 +283,12 @@ JNIEXPORT jobject JNICALL Java_dev_onvoid_webrtc_PeerConnectionFactory_createPee
 	if (pc != nullptr) {
 		auto javaPeerConnection = jni::JavaFactories::create(env, pc.release());
 
-		if (enableInterceptors) {
+		/*if (enableInterceptors) {
 			auto interceptor = GetLastCreatedInterceptor();
 			if (interceptor) {
 				interceptor->SetPeerConnection(env, javaPeerConnection.get());
 			}
-		}
+		}*/
 
 		SetHandle(env, javaPeerConnection.get(), "observerHandle", observer);
 

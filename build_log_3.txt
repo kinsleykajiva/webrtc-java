@@ -1,0 +1,61 @@
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.fusesource.jansi.internal.JansiLoader in an unnamed module (file:/C:/Users/Kinsley/.m2/wrapper/dists/apache-maven-3.8.4-bin/52ccbt68d252mdldqsfsn03jlf/apache-maven-3.8.4/lib/jansi-2.4.0.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by com.google.common.util.concurrent.AbstractFuture$UnsafeAtomicHelper (file:/C:/Users/Kinsley/.m2/wrapper/dists/apache-maven-3.8.4-bin/52ccbt68d252mdldqsfsn03jlf/apache-maven-3.8.4/lib/guava-25.1-android.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.common.util.concurrent.AbstractFuture$UnsafeAtomicHelper
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+[INFO] Scanning for projects...
+[INFO] Inspecting build with total of 1 modules
+[INFO] Installing Central Publishing features
+[INFO] 
+[INFO] -----------------< dev.onvoid.webrtc:webrtc-java-jni >------------------
+[INFO] Building webrtc-java-jni 0.15.0-SNAPSHOT
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- cmake-maven-plugin:3.22.1-b1:generate (cmake-generate) @ webrtc-java-jni ---
+[INFO] Executing cmake on PATH
+-- Toolchain file: toolchain/x86_64-windows-clang.cmake
+-- Selecting Windows SDK version 10.0.26100.0 to target Windows 10.0.26200.
+-- WebRTC checkout path: C:/Users/Kinsley/webrtc
+-- WebRTC checkout branch: branch-heads/7390
+-- WebRTC target: windows x64
+-- WebRTC build type: Release
+-- WebRTC use custom libcxx: false
+-- WebRTC install path: C:/Users/Kinsley/webrtc/build
+-- WebRTC: Added libc++ objects to webrtc from C:/Users/Kinsley/webrtc/src/out/Release/obj/buildtools/third_party/libc++/libc++
+-- WebRTC: Compiled version found 'C:/Users/Kinsley/webrtc/build/lib/webrtc.lib'
+-- Configuring done (0.3s)
+-- Generating done (0.7s)
+-- Build files have been written to: C:/Users/Kinsley/IdeaProjects/webrtc-java/webrtc-jni/target/windows-x86_64
+[INFO] 
+[INFO] --- cmake-maven-plugin:3.22.1-b1:compile (cmake-compile) @ webrtc-java-jni ---
+[INFO] Executing cmake on PATH
+MSBuild version 17.14.19+164abd434 for .NET Framework
+
+  pseudo.cxx
+C:\Users\Kinsley\IdeaProjects\webrtc-java\webrtc-jni\target\windows-x86_64\dependencies\webrtc\pseudo.cxx(1,13): warning : unused function 'pseudo' [-Wunused-function] [C:\Users\Kinsley\IdeaProjects\webrtc-java\webrtc-jni\target\windows-x86_64\dependencies\webrtc\webrtc.vcxproj]
+  webrtc.vcxproj -> C:\Users\Kinsley\IdeaProjects\webrtc-java\webrtc-jni\target\windows-x86_64\dependencies\webrtc\Release\webrtc.lib
+  jni-voithos.vcxproj -> C:\Users\Kinsley\IdeaProjects\webrtc-java\webrtc-jni\target\windows-x86_64\dependencies\jni-voithos\Release\jni-voithos.lib
+  RTCRtpPacket.cpp
+  In file included from C:\Users\Kinsley\IdeaProjects\webrtc-java\webrtc-jni\src\main\cpp\src\api\RTCRtpPacket.cpp:1:
+C:\Users\Kinsley\IdeaProjects\webrtc-java\webrtc-jni\src\main\cpp\include\api/RTCRtpPacket.h(5,10): fatal  error : 'api/rtp_packet.h' file not found [C:\Users\Kinsley\IdeaProjects\webrtc-java\webrtc-jni\target\windows-x86_64\webrtc-java.vcxproj]
+[WARNING] Command: [C:\Program Files\CMake\bin\cmake.exe, --build, C:\Users\Kinsley\IdeaProjects\webrtc-java\webrtc-jni\target\windows-x86_64, --target, install, --config, Release]
+[WARNING] Directory: null
+[WARNING] Environment: {USERDOMAIN_ROAMINGPROFILE=DESKTOP-CT86S0H, ANTIGRAVITY_EDITOR_APP_ROOT=c:\Users\Kinsley\AppData\Local\Programs\Antigravity\resources\app, NO_PROXY=*.azureedge.net, NVM_SYMLINK=C:\nvm4w\nodejs, PROCESSOR_LEVEL=6, EFC_11848_1262719628=1, SESSIONNAME=Console, ALLUSERSPROFILE=C:\ProgramData, PROCESSOR_ARCHITECTURE=AMD64, jvmConfig=\.mvn\jvm.config, PSModulePath=C:\Users\Kinsley\Documents\PowerShell\Modules;C:\Program Files\PowerShell\Modules;c:\program files\powershell\7\Modules;C:\Program Files\WindowsPowerShell\Modules;C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules;C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\platform\PowerShell, VSCODE_PID=12416, SystemDrive=C:, MAVEN_HOME=C:\Users\Kinsley\.m2\wrapper\dists\apache-maven-3.8.4-bin\52ccbt68d252mdldqsfsn03jlf\apache-maven-3.8.4, USERNAME=Kinsley, ProgramFiles(x86)=C:\Program Files (x86), VSCODE_NLS_CONFIG={"userLocale":"en-us","osLocale":"en-us","resolvedLanguage":"en","defaultMessagesFile":"C:\\Users\\Kinsley\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\out\\nls.messages.json","locale":"en-us","availableLanguages":{}}, WDIR=C:\, CHROME_CRASHPAD_PIPE_NAME=\\.\pipe\crashpad_12416_URVXJTLZKTZEKWCV, FPS_BROWSER_USER_PROFILE_STRING=Default, PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.RB;.RBW;.CPL, DriverData=C:\Windows\System32\Drivers\DriverData, VSCODE_CRASH_REPORTER_PROCESS_TYPE=extensionHost, OneDriveConsumer=C:\Users\Kinsley\OneDrive, CLASSWORLDS_JAR="C:\Users\Kinsley\.m2\wrapper\dists\apache-maven-3.8.4-bin\52ccbt68d252mdldqsfsn03jlf\apache-maven-3.8.4\boot\plexus-classworlds-2.6.0.jar", GOPATH=C:\Users\Kinsley\go, VSCODE_CODE_CACHE_PATH=C:\Users\Kinsley\AppData\Roaming\Antigravity\CachedData\450b6b28083d737992adc5d19637f22c95ffba7b, ORIGINAL_XDG_CURRENT_DESKTOP=undefined, ProgramData=C:\ProgramData, ProgramW6432=C:\Program Files, HOMEPATH=\Users\Kinsley, PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 142 Stepping 10, GenuineIntel, POWERSHELL_DISTRIBUTION_CHANNEL=MSI:Windows 10 Pro, ProgramFiles=C:\Program Files, PUBLIC=C:\Users\Public, windir=C:\WINDOWS, EFC_11848_3789132940=1, ZES_ENABLE_SYSMAN=1, LOCALAPPDATA=C:\Users\Kinsley\AppData\Local, USERDOMAIN=DESKTOP-CT86S0H, VSCODE_HANDLES_UNCAUGHT_ERRORS=true, FPS_BROWSER_APP_PROFILE_STRING=Internet Explorer, LOGONSERVER=\\DESKTOP-CT86S0H, JAVA_HOME=C:\Users\Kinsley\.jdks\graalvm-ce-25.0.1, PROMPT=$P$G, ERROR_CODE=0, EXEC_DIR=C:\Users\Kinsley\IdeaProjects\webrtc-java, ELECTRON_RUN_AS_NODE=1, OneDrive=C:\Users\Kinsley\OneDrive, =C:=C:\Users\Kinsley\IdeaProjects\webrtc-java, APPDATA=C:\Users\Kinsley\AppData\Roaming, ChocolateyInstall=C:\ProgramData\chocolatey, MAVEN_CMD_LINE_ARGS=compile -pl webrtc-jni, CommonProgramFiles=C:\Program Files\Common Files, Path=C:\Program Files\PowerShell\7;C:\Users\Kinsley\.jdks\graalvm-ce-25.0.1\bin\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\nvm;C:\nvm4w\nodejs;C:\Program Files\Go\bin;C:\Program Files\CMake\bin;C:\Program Files (x86)\scala\bin;C:\ProgramData\chocolatey\bin;C:\xampp\php;C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\bin;C:\nssm-2.24\win64;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files (x86)\Gpg4win\..\GnuPG\bin;C:\Users\Kinsley\.m2\wrapper\dists\apache-maven-3.8.4-bin\52ccbt68d252mdldqsfsn03jlf\apache-maven-3.8.4\bin\mvn.cmd;C:\Users\Kinsley\.m2\wrapper\dists\apache-maven-3.8.4-bin\52ccbt68d252mdldqsfsn03jlf\apache-maven-3.8.4\bin;C:\TDM-GCC-64\bin;C:\TDM-GCC-64\bin\gcc.exe;C:\msys64\mingw64\bin;C:\Program Files\PowerShell\7\;C:\Program Files\Git\cmd;C:\Program Files\cursor\resources\app\bin;C:\Users\Kinsley\scrcpy-win64-v3.3.4;C:\Users\Kinsley\jextract-25\bin;C:\Program Files (x86)\Bitvise SSH Client;C:\Program Files\Warp\bin;C:\Program Files\Amazon\AWSCLIV2\;C:\Users\Kinsley\depot_tools;C:\Users\Kinsley\depot_tools;C:\Users\Kinsley\.jdks\graalvm-ce-25.0.1\bin\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\nvm;C:\nvm4w\nodejs;C:\Program Files\Go\bin;C:\Program Files\CMake\bin;C:\Program Files (x86)\scala\bin;C:\ProgramData\chocolatey\bin;C:\xampp\php;C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\bin;C:\nssm-2.24\win64;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files (x86)\Gpg4win\..\GnuPG\bin;C:\Users\Kinsley\.m2\wrapper\dists\apache-maven-3.8.4-bin\52ccbt68d252mdldqsfsn03jlf\apache-maven-3.8.4\bin\mvn.cmd;C:\Users\Kinsley\.m2\wrapper\dists\apache-maven-3.8.4-bin\52ccbt68d252mdldqsfsn03jlf\apache-maven-3.8.4\bin;C:\TDM-GCC-64\bin;C:\TDM-GCC-64\bin\gcc.exe;C:\msys64\mingw64\bin;C:\Program Files\PowerShell\7\;C:\Program Files\Git\cmd;C:\Program Files\cursor\resources\app\bin;C:\Users\Kinsley\scrcpy-win64-v3.3.4;C:\Users\Kinsley\jextrac, VSCODE_CWD=C:\Users\Kinsley\AppData\Local\Programs\Antigravity, OS=Windows_NT, COMPUTERNAME=DESKTOP-CT86S0H, VSCODE_ESM_ENTRYPOINT=vs/workbench/api/node/extensionHostProcess, JAVACMD=C:\Users\Kinsley\.jdks\graalvm-ce-25.0.1\bin\java.exe, MAVEN_PROJECTBASEDIR=C:\Users\Kinsley\IdeaProjects\webrtc-java, NVM_HOME=C:\nvm, PROCESSOR_REVISION=8e0a, CommonProgramW6432=C:\Program Files\Common Files, ComSpec=C:\WINDOWS\system32\cmd.exe, DEPOT_TOOLS_WIN_TOOLCHAIN=0, GSTREAMER_1_0_ROOT_MSVC_X86_64=C:\Program Files\gstreamer\1.0\msvc_x86_64\, CLASSWORLDS_LAUNCHER=org.codehaus.plexus.classworlds.launcher.Launcher, EFC_11848_2283032206=1, SystemRoot=C:\WINDOWS, TEMP=C:\Users\Kinsley\AppData\Local\Temp, HOMEDRIVE=C:, USERPROFILE=C:\Users\Kinsley, TMP=C:\Users\Kinsley\AppData\Local\Temp, CommonProgramFiles(x86)=C:\Program Files (x86)\Common Files, NUMBER_OF_PROCESSORS=8, EFC_11848_2775293581=1, VSCODE_IPC_HOOK=\\.\pipe\2a006c58-1.104.0-main-sock}
+[WARNING] Exit code: 1
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  15.237 s
+[INFO] Finished at: 2026-01-23T21:16:13+02:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal com.googlecode.cmake-maven-project:cmake-maven-plugin:3.22.1-b1:compile (cmake-compile) on project webrtc-java-jni: Return code: 1 -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException

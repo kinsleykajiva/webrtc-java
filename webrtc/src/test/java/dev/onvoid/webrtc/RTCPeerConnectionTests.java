@@ -37,11 +37,11 @@ class RTCPeerConnectionTests extends TestBase {
 
 	private RTCPeerConnection peerConnection;
 
-
 	@BeforeEach
 	void init() {
 		RTCConfiguration config = new RTCConfiguration();
-		PeerConnectionObserver observer = candidate -> { };
+		PeerConnectionObserver observer = candidate -> {
+		};
 
 		peerConnection = factory.createPeerConnection(config, observer);
 	}
@@ -62,7 +62,8 @@ class RTCPeerConnectionTests extends TestBase {
 		config.iceTransportPolicy = RTCIceTransportPolicy.RELAY;
 		config.rtcpMuxPolicy = RTCRtcpMuxPolicy.NEGOTIATE;
 
-		RTCPeerConnection peerConnection = factory.createPeerConnection(config, candidate -> {});
+		RTCPeerConnection peerConnection = factory.createPeerConnection(config, candidate -> {
+		});
 		RTCConfiguration peerConfig = peerConnection.getConfiguration();
 
 		assertEquals(config.iceServers, peerConfig.iceServers);
@@ -153,7 +154,10 @@ class RTCPeerConnectionTests extends TestBase {
 	@Test
 	void addTransceiverNullParams() {
 		assertThrows(NullPointerException.class, () -> {
-			peerConnection.addTransceiver(null, null);
+			peerConnection.addTransceiver((MediaStreamTrack) null, null);
+		});
+		assertThrows(NullPointerException.class, () -> {
+			peerConnection.addTransceiver((MediaType) null, null);
 		});
 	}
 
@@ -378,7 +382,8 @@ class RTCPeerConnectionTests extends TestBase {
 	@Test
 	void statesWhenClosed() {
 		RTCConfiguration config = new RTCConfiguration();
-		PeerConnectionObserver observer = candidate -> { };
+		PeerConnectionObserver observer = candidate -> {
+		};
 
 		RTCPeerConnection peerConnection = factory.createPeerConnection(config, observer);
 

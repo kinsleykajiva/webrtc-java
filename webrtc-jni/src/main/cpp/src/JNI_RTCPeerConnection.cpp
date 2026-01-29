@@ -40,7 +40,9 @@
 
 #include "api/peer_connection_interface.h"
 #include "api/rtp_receiver_interface.h"
+#include "api/rtp_receiver_interface.h"
 #include "api/rtp_sender_interface.h"
+#include "api/media_types.h"
 
 #include <string>
 #include <vector>
@@ -154,7 +156,7 @@ JNIEXPORT void JNICALL Java_dev_onvoid_webrtc_RTCPeerConnection_removeTrack
 	}
 }
 
-JNIEXPORT jobject JNICALL Java_dev_onvoid_webrtc_RTCPeerConnection_addTransceiver
+JNIEXPORT jobject JNICALL Java_dev_onvoid_webrtc_RTCPeerConnection_addTransceiver__Ldev_onvoid_webrtc_media_MediaStreamTrack_2Ldev_onvoid_webrtc_RTCRtpTransceiverInit_2
 (JNIEnv * env, jobject caller, jobject jTrack, jobject jTransceiverInit)
 {
 	if (jTrack == nullptr) {
@@ -177,6 +179,60 @@ JNIEXPORT jobject JNICALL Java_dev_onvoid_webrtc_RTCPeerConnection_addTransceive
 	}
 	else {
 		result = pc->AddTransceiver(webrtc::scoped_refptr<webrtc::MediaStreamTrackInterface>(track));
+	}
+
+	if (result.ok()) {
+		auto transceiver = result.MoveValue();
+
+		return jni::JavaFactories::create(env, transceiver.release()).release();
+	}
+
+	env->Throw(jni::JavaRuntimeException(env, jni::RTCErrorToString(result.error()).c_str()));
+
+	return nullptr;
+}
+
+JNIEXPORT jobject JNICALL Java_dev_onvoid_webrtc_RTCPeerConnection_addTransceiver__Ldev_onvoid_webrtc_media_MediaType_2Ldev_onvoid_webrtc_RTCRtpTransceiverInit_2
+(JNIEnv * env, jobject caller, jobject jMediaType, jobject jTransceiverInit)
+{
+	if (jMediaType == nullptr) {
+		env->Throw(jni::JavaNullPointerException(env, "MediaType must not be null"));
+		return nullptr;
+	}
+
+	webrtc::PeerConnectionInterface * pc = GetHandle<webrtc::PeerConnectionInterface>(env, caller);
+	CHECK_HANDLEV(pc, nullptr);
+
+	webrtc::MediaType media_type;
+	
+	jclass cls = env->GetObjectClass(jMediaType);
+	jmethodID mid = env->GetMethodID(cls, "name", "()Ljava/lang/String;");
+	jstring j_name = (jstring) env->CallObjectMethod(jMediaType, mid);
+	std::string name = jni::JavaString::toNative(env, jni::JavaLocalRef<jstring>(env, j_name));
+
+	if (name == "AUDIO") {
+		media_type = webrtc::MediaType::AUDIO;
+	}
+	else if (name == "VIDEO") {
+		media_type = webrtc::MediaType::VIDEO;
+	}
+	else if (name == "DATA") {
+		media_type = webrtc::MediaType::DATA;
+	}
+	else {
+		env->Throw(jni::JavaRuntimeException(env, ("Unknown MediaType: " + name).c_str()));
+		return nullptr;
+	}
+
+	webrtc::RTCErrorOr<webrtc::scoped_refptr<webrtc::RtpTransceiverInterface>> result;
+
+	if (jTransceiverInit != nullptr) {
+		auto init = jni::RTCRtpTransceiverInit::toNative(env, jni::JavaLocalRef<jobject>(env, jTransceiverInit));
+
+		result = pc->AddTransceiver(media_type, init);
+	}
+	else {
+		result = pc->AddTransceiver(media_type);
 	}
 
 	if (result.ok()) {

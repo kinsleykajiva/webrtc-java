@@ -1,4 +1,4 @@
-package dev.onvoid.webrtc.examples;
+package dev.onvoid.webrtc.interceptorexamples;
 
 import dev.onvoid.webrtc.*;
 import java.nio.ByteBuffer;

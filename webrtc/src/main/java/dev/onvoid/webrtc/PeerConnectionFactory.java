@@ -54,6 +54,9 @@ public class PeerConnectionFactory extends DisposableNativeObject {
 	@SuppressWarnings("unused")
 	private long workerThreadHandle;
 
+	@SuppressWarnings("unused")
+	private long enableInterceptors;
+
 	/**
 	 * Creates an instance of PeerConnectionFactory.
 	 */

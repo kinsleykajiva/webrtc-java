@@ -18,6 +18,7 @@ package dev.onvoid.webrtc;
 
 import dev.onvoid.webrtc.internal.NativeObject;
 import dev.onvoid.webrtc.media.MediaStreamTrack;
+import dev.onvoid.webrtc.media.MediaType;
 
 import java.util.List;
 
@@ -163,6 +164,20 @@ public class RTCPeerConnection extends NativeObject {
 	 *         the media data.
 	 */
 	public native RTCRtpTransceiver addTransceiver(MediaStreamTrack track,
+			RTCRtpTransceiverInit init);
+
+	/**
+	 * Create a new RTCRtpTransceiver and add it to the set of transceivers.
+	 * Adding a transceiver will cause future calls to {@link #createOffer} to
+	 * add a media description for the corresponding transceiver.
+	 *
+	 * @param mediaType The media type of the transceiver.
+	 * @param init      The transceiver configuration options.
+	 *
+	 * @return The RTCRtpTransceiver which will be used to transmit and receive
+	 *         the media data.
+	 */
+	public native RTCRtpTransceiver addTransceiver(MediaType mediaType,
 			RTCRtpTransceiverInit init);
 
 	/**

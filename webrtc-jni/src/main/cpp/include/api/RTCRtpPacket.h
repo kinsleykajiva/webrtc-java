@@ -2,7 +2,7 @@
 #define JNI_RTC_RTP_PACKET_H_
 
 #include "JavaRef.h"
-#include "api/rtp_packet.h"
+#include "modules/rtp_rtcp/source/rtp_packet.h"
 #include <jni.h>
 
 namespace jni {

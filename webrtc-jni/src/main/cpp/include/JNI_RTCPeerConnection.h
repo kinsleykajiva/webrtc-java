@@ -52,7 +52,15 @@ extern "C" {
 	 * Method:    addTransceiver
 	 * Signature: (Ldev/onvoid/webrtc/media/MediaStreamTrack;Ldev/onvoid/webrtc/RTCRtpTransceiverInit;)Ldev/onvoid/webrtc/RTCRtpTransceiver;
 	 */
-	JNIEXPORT jobject JNICALL Java_dev_onvoid_webrtc_RTCPeerConnection_addTransceiver
+	JNIEXPORT jobject JNICALL Java_dev_onvoid_webrtc_RTCPeerConnection_addTransceiver__Ldev_onvoid_webrtc_media_MediaStreamTrack_2Ldev_onvoid_webrtc_RTCRtpTransceiverInit_2
+	(JNIEnv *, jobject, jobject, jobject);
+
+	/*
+	 * Class:     dev_onvoid_webrtc_RTCPeerConnection
+	 * Method:    addTransceiver
+	 * Signature: (Ldev/onvoid/webrtc/media/MediaType;Ldev/onvoid/webrtc/RTCRtpTransceiverInit;)Ldev/onvoid/webrtc/RTCRtpTransceiver;
+	 */
+	JNIEXPORT jobject JNICALL Java_dev_onvoid_webrtc_RTCPeerConnection_addTransceiver__Ldev_onvoid_webrtc_media_MediaType_2Ldev_onvoid_webrtc_RTCRtpTransceiverInit_2
 	(JNIEnv *, jobject, jobject, jobject);
 
 	/*
